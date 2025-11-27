@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Məryəm üçün ♡</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 99%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            color: white;
+            touch-action: manipulation;
+        }
+        .container {
+            width: 100%; height: 100%;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            padding: 20px;
+        }
+        h1 { font-size: 46px; font-weight: 800; margin-bottom: 20px; text-shadow: 0 4px 15px rgba(0,0,0,0.4); }
+        .menu {
+            background: rgba(255,255,255,0.25);
+            backdrop-filter: blur(20px);
+            border-radius: 26px;
+            padding: 50px 30px;
+            width: 90%;
+            max-width: 380px;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+            border: 1px solid rgba(255,255,255,0.4);
+        }
+        .btn {
+            background: #ff6b9d;
+            color: white;
+            border: none;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 50px;
+            font-size: 24px;
+            font-weight: 700;
+            width: 100%;
+            cursor: pointer;
+            box-shadow: 0 12px 35px rgba(255,107,157,0.5);
+            transition: all 0.3s;
+        }
+        .btn:active { transform: scale(0.94); }
+        canvas {
+            border-radius: 22px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.35);
+            margin-top: 30px;
+            display: none;
+        }
+        .final {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 100;
+        }
+        .bigheart { font-size: 110px; animation: pulse 2s infinite; margin-bottom: 20px; }
+        @keyframes pulse {
+            0%,100% { transform: scale(1); }
+            50% { transform: scale(1.18); }
+        }
+        @keyframes showFinal {
+            0% { opacity:0; transform: translate(-50%, -50%) scale(0.3); }
+            60% { opacity:1; transform: translate(-50%, -50%) scale(1.15); }
+            100% { opacity:1; transform: translate(-50%, -50%) scale(1); }
+        }
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <  <div class="container" id="menu">
+        <div class="menu">
+            <h1>♡ Məryəm ♡</h1>
+            <p style="font-size:21px; margin:25px 0; opacity:0.9;">
+                Bu oyun yalnız sənin üçün yaradıldı
+            </p>
+            <button class="btn" onclick="startGame()">Başla 💕</button>
+        </div>
+    </div>
+
+    <canvas id="canvas" width="360" height="620"></canvas>
+
+    <div class="final" id="final">
+        <div class="bigheart">💗</div>
+        <h1 style="font-size:58px; margin:15px 0;">Səni sevirəm</h1>
+        <h1 style="font-size:64px; font-weight:900; color:#ff6b9d;">Məryəm</h1>
+        <p style="font-size:26px; margin-top:25px;">
+            Sən mənim hər şeyimsən<br>
+            Ömrümün sonuna qədər ♡
+        </p>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const menu = document.getElementById('menu');
+        const final = document.getElementById('final');
+        
+        let hearts = [];
+        let score = 0;
+        let gameActive = false;
+
+        class Heart {
+            constructor() {
+                this.x = Math.random() * (canvas.width - 70) + 35;
+                this.y = -90;
+                this.speed = Math.random() * 1.8 + 1.2;  // daha yavaş!
+                this.size = Math.random() * 25 + 45;
+            }
+            draw() {
+                ctx.font = this.size + 'px Arial';
+                ctx.fillText('💖', this.x, this.y);
+            }
+            update() {
+                this.y += this.speed;
+            }
+        }
+
+        function startGame() {
+            menu.style.display = 'none';
+            canvas.style.display = 'block';
+            score = 0;
+            hearts = [];
+            gameActive = true;
+            final.style.opacity = '0';
+            animate();
+        }
+
+        function endGame() {
+            gameActive = false;
+            canvas.style.display = 'none';
+            final.style.opacity = '1';
+            final.style.animation = 'showFinal 3s forwards';
+            
+            // Sonunda kalp yağmuru
+            for(let i = 0; i < 60; i++) {
+                setTimeout(createRain, i * 120);
+            }
+        }
+
+        function createRain() {
+            const h = document.createElement('div');
+            h.textContent = ['💕','💖','💗','❤️','🩷'][Math.floor(Math.random()*5)];
+            h.style.position = 'absolute';
+            h.style.fontSize = Math.random()*30 + 35 + 'px';
+            h.style.left = Math.random() * window.innerWidth + 'px';
+            h.style.top = '-60px';
+            h.style.pointerEvents = 'none';
+            h.style.animation = 'fall ' + (Math.random()*3 + 4) + 's linear forwards';
+            document.body.appendChild(h);
+            setTimeout(() => h.remove(), 8000);
+        }
+
+        canvas.addEventListener('touchstart', e => {
+            if(!gameActive) return;
+            e.preventDefault();
+            const touch = e.touches[0];
+            const rect = canvas.getBoundingClientRect();
+            const x = touch.clientX - rect.left;
+            const y = touch.clientY - rect.top;
+
+            for(let i = hearts.length-1; i >= 0; i--) {
+                const h = hearts[i];
+                if (x > h.x-50 && x < h.x+50 && y > h.y-70 && y < h.y+20) {
+                    hearts.splice(i,1);
+                    score++;
+                    if(score >= 18) endGame(); // 18 kalp yeter
+                }
+            }
+        });
+
+        function animate() {
+            if(!gameActive) return;
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+
+            if(Math.random() < 0.08) hearts.push(new Heart());
+
+            hearts = hearts.filter(h => {
+                h.update();
+                h.draw();
+                return h.y < canvas.height + 100;
+            });
+
+            ctx.font = '32px Arial';
+            ctx.fillStyle = 'rgba(255,255,255,0.9)';
+            ctx.fillText('❤️ ' + score + '/18', 25, 60);
+
+            requestAnimationFrame(animate);
+        }
+
+        // Kalp yağmuru için CSS
+        const style = document.createElement('style');
+        style.textContent = `@keyframes fall { to { transform: translateY(110vh) rotate(720deg); opacity: 0; } }`;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
