@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meryem Oyunu</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #ffe6f2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+    #gameBox {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.15);
+    }
+    button {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 10px;
+      background: #ff4da6;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    button:active { transform: scale(0.95); }
+  </style>
+</head>
+<body>
+  <div id="gameBox">
+    <h2>Meryem üçün mini oyun ❤️</h2>
+    <p id="text">Toplamaya hazır ol?</p>
+    <button id="startBtn" onclick="startGame()">Başla</button>
+  </div>
+
+  <script>
+    let correct = 0;
+
+    function startGame() {
+      correct = 0;
+      askQuestion();
+    }
+
+    function askQuestion() {
+      if (correct === 5) {
+        document.getElementById('text').innerText = "Meryem... Səni çox sevirəm ❤️";
+        document.getElementById('startBtn').style.display = "none";
+        return;
+      }
+
+      let a = Math.floor(Math.random() * 10) + 1;
+      let b = Math.floor(Math.random() * 10) + 1;
+      let answer = prompt(`${a} + ${b} = ?`);
+
+      if (answer == a + b) {
+        correct++;
+        askQuestion();
+      } else {
+        alert("Yanlış cavab. Yenidən cəhd et :)");
+        askQuestion();
+      }
+    }
+  </script>
+</body>
+</html>
+
+---
+# **VISUAL STUDIO CODE İLƏ NECƏ DÜZƏLT MƏ (ADIM-ADIM)**
+
+## **1️⃣ Faylı yaratmaq**
+1. Kompütərdə **Visual Studio Code** aç.
+2. Sol tərəfdə **Explorer** → **New File**.
+3. Faylın adını yaz: **meryem.html**
+4. Canvasdakı kodu olduğu kimi kopyalayıb bu fayla yapışdır.
+5. **Ctrl + S** ilə yadda saxla.
+
+---
+## **2️⃣ Brauzerdə açmaq**
+### Variant A — Birbaşa açma (ən asan yol)
+1. Kompüterdə **meryem.html** faylının üzərinə iki dəfə klik et.
+2. Brauzerdə açılacaq.
+3. Telefonuna göndərmək üçün faylı WhatsApp/Telegram ilə göndərə bilərsən.
+
+### Variant B — Live Server (VS Code içindən)
+1. VS Code-da **Extensions** bölməsinə gir.
+2. "**Live Server**" yaz və quraşdır.
+3. meryem.html aç → sağ klik → **Open With Live Server**
+4. Sayt avtomatik brauzerdə açılacaq.
+
+---
+# **3️⃣ Telefonla paylaşmaq**
+### **EN ASAN YOL**
+Faylı sevgilinə göndər:
+- WhatsApp
+- Telegram
+- e-mail
+- Google Drive linki
+- AirDrop (iPhone)
+
+O, sadəcə faylı açıb oynayacaq.
+
+---
+# **4️⃣ Linklə paylaşmaq (istəsən online sayt kimi)**
+### **GitHub Pages (tam pulsuz, linklə açılır)**
+1. github.com-da hesab aç.
+2. New Repository → ad: **meryem-oyunu**.
+3. İçinə **meryem.html** faylını yüklə.
+4. Settings → Pages → Source = **main branch** → Save.
+5. 1-2 dəqiqəyə link hazır olur:
+   `https://istifadəçi-adın.github.io/meryem-oyunu/meryem.html`
+
+Bu linki Meryemə göndərirsən və oyun internetdə açılır ❤️
